@@ -1,6 +1,9 @@
 import React from 'react';
-// import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid';
 import './App.css';
+import ContactForm from './ContactForm';
+import Filter from './Filter';
+import ContactList from './ContactList';
 
 export class App extends React.Component {
   state = {
@@ -11,44 +14,55 @@ export class App extends React.Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
+  hendleChenge = evn => {
+    const { name, value } = evn.currentTarget;
+    this.setState({ [name]: value });
+  };
+  hendleSubmitForm = data => {
+    const { name, number } = data;
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    const { contacts } = this.state;
+    const checkContact = contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+    if (checkContact) {
+      alert('Імя вже присутнє');
+      return;
+    }
+    this.setState(prevState => ({
+      contacts: [newContact, ...prevState.contacts],
+    }));
+  };
+  visibleContact = () => {
+    const { contacts, filter } = this.state;
+    const filterNormalize = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filterNormalize)
+    );
+  };
+
+  deleteContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
+  };
   render() {
+    const visibleContacts = this.visibleContact();
+
     return (
       <div className="container">
-        <form className="form">
-          <p>Name</p>
-          <input
-            className="input"
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          />
-          <p>Number</p>
-          <input
-            className="input"
-            type="tel"
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          />
-          <button className="btn" type="submit">
-            Add contact
-          </button>
-        </form>
+        <h1>Phonebook</h1>
+        <ContactForm onSubmit={this.hendleSubmitForm} />
         <p>Contacts</p>
-        <ul className="list">
-          {this.state.contacts.map(({ id, name, number }) => (
-            <li key={id} className="item">
-              {name}: {number}
-            </li>
-          ))}
-        </ul>
+        <Filter value={this.state.filter} onChange={this.hendleChenge} />
+        <ContactList contact={visibleContacts} onDelete={this.deleteContact} />
       </div>
     );
   }

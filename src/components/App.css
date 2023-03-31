@@ -7,30 +7,3 @@
   font-size: 30px;
   color: #010101;
 }
-
-.form {
-  border: solid 2px black;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  padding: 30px;
-  margin-bottom: 20px;
-}
-
-.input {
-  width: 70%;
-  margin-bottom: 10px;
-}
-
-.btn {
-  width: 100px;
-}
-
-.list {
-  border: solid 2px black;
-  border-radius: 10px;
-  width: 300px;
-  padding: 30px;
-  font-size: 20px;
-}
