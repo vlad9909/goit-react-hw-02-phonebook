@@ -5,6 +5,7 @@
   padding: 30px;
   font-size: 20px;
   margin-top: 20px;
+  margin-bottom: 10px;
 }
 .item {
   display: flex;
@@ -14,4 +15,9 @@
 
 .name {
   width: 200px;
+}
+
+.noCont {
+  display: flex;
+  justify-content: center;
 }

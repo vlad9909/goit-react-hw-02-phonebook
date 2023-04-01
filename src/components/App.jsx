@@ -63,6 +63,7 @@ export class App extends React.Component {
         <p>Contacts</p>
         <Filter value={this.state.filter} onChange={this.hendleChenge} />
         <ContactList contact={visibleContacts} onDelete={this.deleteContact} />
+        <p>Кількість контактів: {this.state.contacts.length}</p>
       </div>
     );
   }
